@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>De Kapotte AI — Debug Escape Room</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <div class="header">
+      <h1>🤖 DE KAPOTTE AI — DEBUG MODE</h1>
+      <p class="sub">
+        Je bent een junior developer. Het AI-systeem is vastgelopen en moet opnieuw opgestart worden.
+        Debug de fouten, repareer de code, en herstart het systeem om te ontsnappen.
+      </p>
+      <div class="status-banner error" id="systemBanner">
+        <span>⚠️</span>
+        <span><strong>SYSTEEM STATUS:</strong> AI-systeem offline — kritieke fouten gedetecteerd</span>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- LEFT: System Status & Controls -->
+      <div class="card">
+        <h2>System Status</h2>
+        
+        <div class="system-status">
+          <div class="status-item">
+            <div class="label">AI Core</div>
+            <div class="value">
+              <span class="status-dot error" id="statusAI"></span>
+              <span>OFFLINE</span>
+            </div>
+          </div>
+          <div class="status-item">
+            <div class="label">Error Logs</div>
+            <div class="value">
+              <span class="status-dot error" id="statusLogs"></span>
+              <span>3 ERRORS</span>
+            </div>
+          </div>
+          <div class="status-item">
+            <div class="label">Code Fix</div>
+            <div class="value">
+              <span class="status-dot error" id="statusCode"></span>
+              <span>PENDING</span>
+            </div>
+          </div>
+          <div class="status-item">
+            <div class="label">Restart</div>
+            <div class="value">
+              <span class="status-dot error" id="statusRestart"></span>
+              <span>LOCKED</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sep"></div>
+
+        <div>
+          <h3 style="font-size:13px; margin:0 0 12px; color:var(--muted);">Debug Tools</h3>
+          <div class="action-row">
+            <button id="btnErrorLogs">Error Logs</button>
+            <button id="btnCodeEditor">Code Editor</button>
+            <button id="btnSystemConfig">System Config</button>
+            <button id="btnRestart">Restart System</button>
+          </div>
+        </div>
+
+        <div class="sep"></div>
+
+        <div>
+          <h3 style="font-size:13px; margin:0 0 12px; color:var(--muted);">Inventory</h3>
+          <div class="inventory" id="inventory">
+            <span style="color:var(--muted); font-size:12px;">— leeg —</span>
+          </div>
+        </div>
+
+        <div class="sep"></div>
+
+        <div class="notes-section">
+          <h3>📝 Notities</h3>
+          <textarea 
+            id="notesTextarea" 
+            class="notes-textarea" 
+            placeholder="Schrijf hier je notities tijdens het oplossen van de puzzels..."
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- RIGHT: Terminal & Puzzle Area -->
+      <div class="card">
+        <h2>💻 Terminal</h2>
+        
+        <div class="terminal">
+          <div class="terminal-content" id="terminalLog"></div>
+        </div>
+
+        <div class="sep"></div>
+
+        <div id="puzzleArea">
+          <div class="puzzle-panel">
+            <h3>🚀 Welkom, Junior Developer</h3>
+            <p class="description">
+              Het AI-systeem is vastgelopen. Gebruik de debug tools links om het systeem te repareren.
+              Begin met het bekijken van de <strong>Error Logs</strong>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/game.js"></script>
+</body>
+</html>
