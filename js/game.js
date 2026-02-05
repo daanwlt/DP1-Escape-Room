@@ -385,9 +385,9 @@ function checkCodeFix() {
           </p>
           <div style="margin:16px 0;">
             <label style="display:block; margin-bottom:8px; font-size:12px; color:var(--muted);">
-              Toegangscode (combineer error codes: ERR_404 + ERR_500 + ERR_TIMEOUT)
+              Toegangscode: Alles wat na de 'ERR_' komt!
             </label>
-            <input type="text" id="safeCodeInput" placeholder="404500TIMEOUT" style="font-size:18px; letter-spacing:2px; text-align:center;" maxlength="15" />
+            <input type="text" id="safeCodeInput" placeholder="Voer de toegangscode in" style="font-size:18px; letter-spacing:2px; text-align:center;" maxlength="15" />
           </div>
           <div class="action-row">
             <button id="btnOpenSafe" class="primary">🔓 Open Safe</button>
@@ -425,10 +425,9 @@ function checkCodeFix() {
                 </div>
                 <p class="description" style="padding:12px; background:rgba(59,130,246,.1); border-left:3px solid var(--accent); border-radius:4px;">
                   <strong>Puzzel:</strong> De laatste 4 cijfers (0402) vormen een tijdcode in het formaat <code>UU:MM:SS</code>.
-                  <br>• Eerste cijfer = Uren
-                  <br>• Tweede cijfer = Minuten  
-                  <br>• Laatste 2 cijfers = Seconden (als één getal)
-                  <br><br>Voorbeeld: 0402 = 4 uren, 0 minuten, 2 seconden
+                  <br>• Eerste 2 cijfers = Uren
+                  <br>• Derde cijfer = Minuten  
+                  <br>• Laatste cijfers = Seconden 
                 </p>
                 <div class="action-row">
                   <button onclick="renderSystemConfig()" class="primary">Ga naar System Config</button>
@@ -496,7 +495,7 @@ function renderSystemConfig() {
         <p class="description" style="padding:12px; background:rgba(59,130,246,.1); border-left:3px solid var(--accent); border-radius:4px;">
           <strong>💡 Tip:</strong><br>
           De access key serienummer was: <strong style="color:var(--accent); font-family:monospace;">AK-2024-0402</strong>
-          <br>De laatste 4 cijfers (0402) vormen de tijdcode: <strong class="t-accent">4 uren, 0 minuten, 2 seconden</strong>
+          <br>De laatste 4 cijfers (0402) vormen de tijdcode
         </p>
       </div>
       
