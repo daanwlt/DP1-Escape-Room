@@ -50,6 +50,10 @@ let btnErrorLogs, btnCodeEditor, btnSystemConfig, btnRestart;
 // UTILITIES
 // ============================================
 function log(message, type = "muted") {
+  if (!terminalLog) {
+    console.log(`[${type}] ${message}`);
+    return;
+  }
   const line = document.createElement("div");
   line.className = `log-line ${type}`;
   line.textContent = `> ${message}`;
@@ -58,6 +62,10 @@ function log(message, type = "muted") {
 }
 
 function updateStatus() {
+  if (!statusAI || !statusLogs || !statusCode || !statusRestart || !systemBanner || !inventory) {
+    return; // Elements not ready yet
+  }
+  
   // Update status dots
   statusAI.className = `status-dot ${state.systemRestarted ? 'success' : 'error'}`;
   statusLogs.className = `status-dot ${state.errorLogsRead ? 'success' : 'error'}`;
@@ -94,11 +102,13 @@ function updateStatus() {
   }
   
   // Update button states
-  btnSystemConfig.disabled = !state.hasAccessKey;
-  btnRestart.disabled = !state.configSet;
+  if (btnSystemConfig) btnSystemConfig.disabled = !state.hasAccessKey;
+  if (btnRestart) btnRestart.disabled = !state.configSet;
 }
 
 function resetGame() {
+  if (!terminalLog || !puzzleArea) return;
+  
   state.errorLogsRead = false;
   state.codeFixed = false;
   state.safeOpen = false;
@@ -118,7 +128,7 @@ function resetGame() {
   
   puzzleArea.innerHTML = `
     <div class="puzzle-panel">
-      <h3>🚀 Welkom, Junior Developer</h3>
+      <h3>Welkom, Junior Developer</h3>
       <p class="description">
         Het AI-systeem is vastgelopen. Gebruik de debug tools links om het systeem te repareren.
         Begin met het bekijken van de <strong>Error Logs</strong>.
@@ -134,6 +144,10 @@ function resetGame() {
 // BUTTON ACTIVE STATE MANAGEMENT
 // ============================================
 function setActiveButton(activeBtn) {
+  if (!btnErrorLogs || !btnCodeEditor || !btnSystemConfig || !btnRestart) {
+    return; // Buttons not ready yet
+  }
+  
   // Remove active class from all buttons
   btnErrorLogs.classList.remove('active');
   btnCodeEditor.classList.remove('active');
@@ -170,6 +184,7 @@ function initNotes() {
 // PUZZLE 1: ERROR LOGS
 // ============================================
 function renderErrorLogs() {
+  if (!puzzleArea) return;
   setActiveButton('errorLogs');
   puzzleArea.innerHTML = `
     <div class="puzzle-panel">
@@ -225,6 +240,7 @@ function renderErrorLogs() {
 // PUZZLE 2: CODE EDITOR
 // ============================================
 function renderCodeEditor() {
+  if (!puzzleArea) return;
   setActiveButton('codeEditor');
   
   if (!state.errorLogsRead) {
@@ -282,22 +298,22 @@ function renderCodeEditor() {
       
       <div style="margin-top:16px;">
         <label style="display:block; margin-bottom:8px; font-size:12px; color:var(--muted);">
-          Regel 3: Voeg puntkomma toe aan het einde
+          Regel 3
         </label>
         <input type="text" id="fixLine3" placeholder="Typ hier je antwoord..." style="margin-bottom:12px;" />
         
         <label style="display:block; margin-bottom:8px; font-size:12px; color:var(--muted);">
-          Regel 4: Vervang == door ===
+          Regel 4
         </label>
         <input type="text" id="fixLine4" placeholder="Typ hier je antwoord..." style="margin-bottom:12px;" />
         
         <label style="display:block; margin-bottom:8px; font-size:12px; color:var(--muted);">
-          Regel 9: Voeg puntkomma toe aan het einde
+          Regel 9
         </label>
         <input type="text" id="fixLine9" placeholder="Typ hier je antwoord..." style="margin-bottom:12px;" />
         
         <label style="display:block; margin-bottom:8px; font-size:12px; color:var(--muted);">
-          Regel 10: Vervang console.log door console.error
+          Regel 10
         </label>
         <input type="text" id="fixLine10" placeholder="Typ hier je antwoord..." />
       </div>
@@ -444,6 +460,7 @@ function checkCodeFix() {
 // PUZZLE 3: SYSTEM CONFIG
 // ============================================
 function renderSystemConfig() {
+  if (!puzzleArea) return;
   setActiveButton('systemConfig');
   
   if (!state.hasAccessKey) {
@@ -579,6 +596,7 @@ function renderSystemConfig() {
 // PUZZLE 4: SYSTEM RESTART
 // ============================================
 function renderRestart() {
+  if (!puzzleArea) return;
   setActiveButton('restart');
   
   if (!state.configSet) {
@@ -705,54 +723,84 @@ function renderRestart() {
 // INITIALIZATION
 // ============================================
 function initGame() {
-  // Get DOM references
-  terminalLog = document.getElementById("terminalLog");
-  puzzleArea = document.getElementById("puzzleArea");
-  systemBanner = document.getElementById("systemBanner");
-  inventory = document.getElementById("inventory");
-  
-  statusAI = document.getElementById("statusAI");
-  statusLogs = document.getElementById("statusLogs");
-  statusCode = document.getElementById("statusCode");
-  statusRestart = document.getElementById("statusRestart");
-  
-  btnErrorLogs = document.getElementById("btnErrorLogs");
-  btnCodeEditor = document.getElementById("btnCodeEditor");
-  btnSystemConfig = document.getElementById("btnSystemConfig");
-  btnRestart = document.getElementById("btnRestart");
-  
-  // Set up event handlers
-  btnErrorLogs.onclick = renderErrorLogs;
-  btnCodeEditor.onclick = renderCodeEditor;
-  btnSystemConfig.onclick = renderSystemConfig;
-  btnRestart.onclick = renderRestart;
-  
-  // Make functions globally available for onclick handlers
-  window.renderErrorLogs = renderErrorLogs;
-  window.renderCodeEditor = renderCodeEditor;
-  window.renderSystemConfig = renderSystemConfig;
-  window.renderRestart = renderRestart;
-  window.resetGame = resetGame;
-  
-  // Initialize notes
-  initNotes();
-  
-  // Don't set active button initially - only when user clicks
-  // setActiveButton('errorLogs');
-  
-  // Initialize terminal
-  log("=== AI SYSTEM DEBUG MODE ===", "info");
-  log("Systeem gestart...", "muted");
-  log("AI Core: OFFLINE", "error");
-  log("Kritieke fouten gedetecteerd.", "error");
-  log("Begin met Error Logs om te starten.", "muted");
-  
-  updateStatus();
+  try {
+    // Get DOM references
+    terminalLog = document.getElementById("terminalLog");
+    puzzleArea = document.getElementById("puzzleArea");
+    systemBanner = document.getElementById("systemBanner");
+    inventory = document.getElementById("inventory");
+    
+    statusAI = document.getElementById("statusAI");
+    statusLogs = document.getElementById("statusLogs");
+    statusCode = document.getElementById("statusCode");
+    statusRestart = document.getElementById("statusRestart");
+    
+    btnErrorLogs = document.getElementById("btnErrorLogs");
+    btnCodeEditor = document.getElementById("btnCodeEditor");
+    btnSystemConfig = document.getElementById("btnSystemConfig");
+    btnRestart = document.getElementById("btnRestart");
+    
+    // Check if all required elements exist
+    if (!terminalLog || !puzzleArea || !systemBanner || !inventory) {
+      console.error("Missing required DOM elements");
+      return;
+    }
+    
+    if (!statusAI || !statusLogs || !statusCode || !statusRestart) {
+      console.error("Missing status elements");
+      return;
+    }
+    
+    if (!btnErrorLogs || !btnCodeEditor || !btnSystemConfig || !btnRestart) {
+      console.error("Missing button elements");
+      return;
+    }
+    
+    // Set up event handlers
+    btnErrorLogs.onclick = renderErrorLogs;
+    btnCodeEditor.onclick = renderCodeEditor;
+    btnSystemConfig.onclick = renderSystemConfig;
+    btnRestart.onclick = renderRestart;
+    
+    // Make functions globally available for onclick handlers
+    window.renderErrorLogs = renderErrorLogs;
+    window.renderCodeEditor = renderCodeEditor;
+    window.renderSystemConfig = renderSystemConfig;
+    window.renderRestart = renderRestart;
+    window.resetGame = resetGame;
+    
+    // Initialize notes
+    initNotes();
+    
+    // Don't set active button initially - only when user clicks
+    // setActiveButton('errorLogs');
+    
+    // Initialize terminal
+    log("=== AI SYSTEM DEBUG MODE ===", "info");
+    log("Systeem gestart...", "muted");
+    log("AI Core: OFFLINE", "error");
+    log("Kritieke fouten gedetecteerd.", "error");
+    log("Begin met Error Logs om te starten.", "muted");
+    
+    updateStatus();
+  } catch (error) {
+    console.error("Error initializing game:", error);
+    alert("Er is een fout opgetreden bij het laden van de escape room. Controleer de console voor details.");
+  }
 }
 
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initGame);
 } else {
+  // DOM already loaded, initialize immediately
   initGame();
 }
+
+// Fallback: try to initialize after a short delay if something went wrong
+setTimeout(() => {
+  if (!terminalLog && document.getElementById("terminalLog")) {
+    console.log("Retrying initialization...");
+    initGame();
+  }
+}, 100);
