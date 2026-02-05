@@ -345,8 +345,19 @@ input::placeholder{ color: rgba(228,231,235,.4); }
 }
 
 .code-line{
-  display:block;
+  display:flex;
   padding:2px 0;
+}
+
+.line-number{
+  display:inline-block;
+  width:30px;
+  color:var(--muted);
+  opacity:.5;
+  text-align:right;
+  margin-right:12px;
+  user-select:none;
+  flex-shrink:0;
 }
 
 .code-line.error{ color:var(--error); }

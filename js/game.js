@@ -188,7 +188,7 @@ function renderErrorLogs() {
   setActiveButton('errorLogs');
   puzzleArea.innerHTML = `
     <div class="puzzle-panel">
-      <h3>📋 Error Logs</h3>
+      <h3>Error Logs</h3>
       <p class="description">
         Het systeem heeft kritieke fouten gegenereerd. Analyseer de error codes en vind de volgorde.
       </p>
@@ -246,7 +246,7 @@ function renderCodeEditor() {
   if (!state.errorLogsRead) {
     puzzleArea.innerHTML = `
       <div class="puzzle-panel">
-        <h3>💻 Code Editor</h3>
+        <h3>Code Editor</h3>
         <p class="description">
           Je moet eerst de error logs bekijken om de toegangscode te krijgen.
         </p>
@@ -260,24 +260,24 @@ function renderCodeEditor() {
   
   puzzleArea.innerHTML = `
     <div class="puzzle-panel">
-      <h3>💻 Code Editor</h3>
+      <h3>Code Editor</h3>
       <p class="description">
-        Er zijn 4 simpele fouten in de code. Kijk goed naar de regels met ❌ en repareer ze.
+        Er zijn 4 simpele fouten in de code. Kijk goed naar de rode regels met fouten en repareer ze.
       </p>
       
       <div class="code-block">
-        <div class="code-line comment">// AI Core Initialization Function</div>
-        <div class="code-line">function initAI() {</div>
-        <div class="code-line error">  const status = 'active'  // ❌ Fout: ontbreekt puntkomma (;) aan het einde</div>
-        <div class="code-line error">  if (status == 'active') {  // ❌ Fout: gebruik === in plaats van ==</div>
-        <div class="code-line">    console.log('AI initialized');</div>
-        <div class="code-line">  }</div>
-        <div class="code-line">}</div>
-        <div class="code-line comment" style="margin-top:12px;">// Error Handler</div>
-        <div class="code-line">function handleError(err) {</div>
-        <div class="code-line error">  console.log('Error:', err)  // ❌ Fout: ontbreekt puntkomma (;) aan het einde</div>
-        <div class="code-line error">  console.log('Error:', err);  // ❌ Fout: gebruik console.error in plaats van console.log</div>
-        <div class="code-line">}</div>
+        <div class="code-line comment"><span class="line-number">1</span> // AI Core Initialization Function</div>
+        <div class="code-line"><span class="line-number">2</span> function initAI() {</div>
+        <div class="code-line error"><span class="line-number">3</span>   const status = 'active'</div>
+        <div class="code-line error"><span class="line-number">4</span>   if (status == 'active') {</div>
+        <div class="code-line"><span class="line-number">5</span>     console.log('AI initialized');</div>
+        <div class="code-line"><span class="line-number">6</span>   }</div>
+        <div class="code-line"><span class="line-number">7</span> }</div>
+        <div class="code-line comment"><span class="line-number">8</span> // Error Handler</div>
+        <div class="code-line"><span class="line-number">9</span> function handleError(err) {</div>
+        <div class="code-line error"><span class="line-number">10</span>   console.log('Error:', err)</div>
+        <div class="code-line error"><span class="line-number">11</span>   console.log('Error:', err);</div>
+        <div class="code-line"><span class="line-number">12</span> }</div>
       </div>
       
       <div class="action-row" style="margin-top:16px;">
@@ -291,8 +291,8 @@ function renderCodeEditor() {
           <strong>💡 Tip voor beginners:</strong><br>
           • Regel 3: Voeg een puntkomma <code>;</code> toe aan het einde<br>
           • Regel 4: Vervang <code>==</code> door <code>===</code> (3 gelijktekens)<br>
-          • Regel 9: Voeg een puntkomma <code>;</code> toe aan het einde<br>
-          • Regel 10: Vervang <code>console.log</code> door <code>console.error</code>
+          • Regel 10: Voeg een puntkomma <code>;</code> toe aan het einde<br>
+          • Regel 11: Vervang <code>console.log</code> door <code>console.error</code>
         </p>
       </div>
       
@@ -308,12 +308,12 @@ function renderCodeEditor() {
         <input type="text" id="fixLine4" placeholder="Typ hier je antwoord..." style="margin-bottom:12px;" />
         
         <label style="display:block; margin-bottom:8px; font-size:12px; color:var(--muted);">
-          Regel 9
+          Regel 10
         </label>
         <input type="text" id="fixLine9" placeholder="Typ hier je antwoord..." style="margin-bottom:12px;" />
         
         <label style="display:block; margin-bottom:8px; font-size:12px; color:var(--muted);">
-          Regel 10
+          Regel 11
         </label>
         <input type="text" id="fixLine10" placeholder="Typ hier je antwoord..." />
       </div>
@@ -328,7 +328,7 @@ function renderCodeEditor() {
   `;
   
   log("Code editor geopend...", "info");
-  log("4 simpele syntaxfouten gevonden op regels 3, 4, 9 en 10.", "warn");
+  log("4 simpele syntaxfouten gevonden op regels 3, 4, 10 en 11.", "warn");
   
   // Tips toggle button
   document.getElementById("btnShowTips").onclick = () => {
@@ -448,8 +448,8 @@ function checkCodeFix() {
     let errorMsg = "✗ Code bevat nog fouten:<br>";
     if (!correct3) errorMsg += "• Regel 3: voeg puntkomma (;) toe aan het einde<br>";
     if (!correct4) errorMsg += "• Regel 4: gebruik === in plaats van ==<br>";
-    if (!correct9) errorMsg += "• Regel 9: voeg puntkomma (;) toe aan het einde<br>";
-    if (!correct10) errorMsg += "• Regel 10: gebruik console.error in plaats van console.log";
+    if (!correct9) errorMsg += "• Regel 10: voeg puntkomma (;) toe aan het einde<br>";
+    if (!correct10) errorMsg += "• Regel 11: gebruik console.error in plaats van console.log";
     statusEl.innerHTML = `<div style="padding:12px; background:rgba(239,68,68,.1); border:1px solid var(--error); border-radius:8px; color:var(--error);">${errorMsg}</div>`;
     state.codeFixAttempts++;
   }
